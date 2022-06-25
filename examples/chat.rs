@@ -39,7 +39,7 @@ use std::io;
 use std::net::SocketAddr;
 use std::sync::Arc;
 
-#[tokio::main]
+#[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn Error>> {
     use tracing_subscriber::{fmt::format::FmtSpan, EnvFilter};
     // Configure a `tracing` subscriber that logs traces emitted by the chat

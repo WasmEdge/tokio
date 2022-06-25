@@ -186,6 +186,7 @@ impl TcpStream {
     /// The runtime is usually set implicitly when this function is called
     /// from a future driven by a tokio runtime, otherwise runtime can be set
     /// explicitly with [`Runtime::enter`](crate::runtime::Runtime::enter) function.
+    #[cfg(not(target_os = "wasi"))]
     pub fn from_std(stream: std::net::TcpStream) -> io::Result<TcpStream> {
         let io = mio::net::TcpStream::from_std(stream);
         let io = PollEvented::new(io)?;
@@ -226,6 +227,7 @@ impl TcpStream {
     /// [`tokio::net::TcpStream`]: TcpStream
     /// [`std::net::TcpStream`]: std::net::TcpStream
     /// [`set_nonblocking`]: fn@std::net::TcpStream::set_nonblocking
+    #[cfg(not(target_os = "wasi"))]
     pub fn into_std(self) -> io::Result<std::net::TcpStream> {
         #[cfg(unix)]
         {
@@ -1096,6 +1098,7 @@ impl TcpStream {
     /// # Ok(())
     /// # }
     /// ```
+    #[cfg(not(target_os = "wasi"))]
     pub fn linger(&self) -> io::Result<Option<Duration>> {
         socket2::SockRef::from(self).linger()
     }
@@ -1121,6 +1124,7 @@ impl TcpStream {
     /// # Ok(())
     /// # }
     /// ```
+    #[cfg(not(target_os = "wasi"))]
     pub fn set_linger(&self, dur: Option<Duration>) -> io::Result<()> {
         socket2::SockRef::from(self).set_linger(dur)
     }
@@ -1228,7 +1232,7 @@ impl TcpStream {
         self.io.poll_write_vectored(cx, bufs)
     }
 }
-
+#[cfg(not(target_os = "wasi"))]
 impl TryFrom<std::net::TcpStream> for TcpStream {
     type Error = io::Error;
 

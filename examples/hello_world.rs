@@ -18,7 +18,7 @@ use tokio::net::TcpStream;
 
 use std::error::Error;
 
-#[tokio::main]
+#[tokio::main(flavor = "current_thread")]
 pub async fn main() -> Result<(), Box<dyn Error>> {
     // Open a TCP stream to the socket address.
     //

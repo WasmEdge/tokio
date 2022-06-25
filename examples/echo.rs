@@ -27,7 +27,7 @@ use tokio::net::TcpListener;
 use std::env;
 use std::error::Error;
 
-#[tokio::main]
+#[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn Error>> {
     // Allow passing an address to listen on as the first argument of this
     // program, but otherwise we'll just set up our TCP listener on

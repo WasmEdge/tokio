@@ -60,7 +60,7 @@ use tokio_util::codec::{BytesCodec, Decoder};
 
 use std::env;
 
-#[tokio::main]
+#[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Allow passing an address to listen on as the first argument of this
     // program, but otherwise we'll just set up our TCP listener on

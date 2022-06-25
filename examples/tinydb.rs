@@ -81,7 +81,7 @@ enum Response {
     },
 }
 
-#[tokio::main]
+#[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn Error>> {
     // Parse the address we're going to run this server on
     // and set up our TCP listener to accept connections.
