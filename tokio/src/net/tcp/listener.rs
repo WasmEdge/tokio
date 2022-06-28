@@ -304,6 +304,12 @@ impl TcpListener {
         self.io.local_addr()
     }
 
+    /// Returns the local address that this listener is bound to.
+    #[cfg(target_os = "wasi")]
+    pub fn local_addr(&self) -> io::Result<SocketAddr> {
+        self.io.local_addr()
+    }
+
     /// Gets the value of the `IP_TTL` option for this socket.
     ///
     /// For more information about this option, see [`set_ttl`].

@@ -413,10 +413,10 @@ pub mod net;
 mod loom;
 mod park;
 
-// cfg_process! {
-//     pub mod process;
-// }
-
+#[cfg(not(target_os = "wasi"))]
+cfg_process! {
+    pub mod process;
+}
 #[cfg(any(feature = "net", feature = "fs", feature = "io-std"))]
 mod blocking;
 
@@ -426,16 +426,18 @@ cfg_rt! {
 
 pub(crate) mod coop;
 
-// cfg_signal! {
-//     pub mod signal;
-// }
+#[cfg(not(target_os = "wasi"))]
+cfg_signal! {
+    pub mod signal;
+}
 
-// cfg_signal_internal! {
-//     #[cfg(not(feature = "signal"))]
-//     #[allow(dead_code)]
-//     #[allow(unreachable_pub)]
-//     pub(crate) mod signal;
-// }
+#[cfg(not(target_os = "wasi"))]
+cfg_signal_internal! {
+    #[cfg(not(feature = "signal"))]
+    #[allow(dead_code)]
+    #[allow(unreachable_pub)]
+    pub(crate) mod signal;
+}
 
 cfg_sync! {
     pub mod sync;

@@ -7,6 +7,8 @@ use std::net::SocketAddr;
 
 #[cfg(unix)]
 use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
+#[cfg(target_os = "wasi")]
+use std::os::wasi::io::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
 #[cfg(windows)]
 use std::os::windows::io::{AsRawSocket, FromRawSocket, IntoRawSocket, RawSocket};
 use std::time::Duration;
@@ -657,6 +659,34 @@ fn convert_address(address: SocketAddr) -> io::Result<SocketAddr> {
 impl fmt::Debug for TcpSocket {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.inner.fmt(fmt)
+    }
+}
+
+#[cfg(target_os = "wasi")]
+impl AsRawFd for TcpSocket {
+    fn as_raw_fd(&self) -> RawFd {
+        self.inner.as_raw_fd()
+    }
+}
+
+#[cfg(target_os = "wasi")]
+impl FromRawFd for TcpSocket {
+    /// Converts a `RawFd` to a `TcpSocket`.
+    ///
+    /// # Notes
+    ///
+    /// The caller is responsible for ensuring that the socket is in
+    /// non-blocking mode.
+    unsafe fn from_raw_fd(fd: RawFd) -> TcpSocket {
+        let inner = socket2::Socket::from_raw_fd(fd);
+        TcpSocket { inner }
+    }
+}
+
+#[cfg(target_os = "wasi")]
+impl IntoRawFd for TcpSocket {
+    fn into_raw_fd(self) -> RawFd {
+        self.inner.into_raw_fd()
     }
 }
 
