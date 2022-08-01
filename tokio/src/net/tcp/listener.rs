@@ -228,6 +228,15 @@ impl TcpListener {
         Ok(TcpListener { io })
     }
 
+    /// Creates new `TcpListener` from a `std::net::TcpListener`.
+    ///
+    #[cfg(target_os = "wasi")]
+    pub fn from_std(listener: wasmedge_wasi_socket::TcpListener) -> io::Result<TcpListener> {
+        let io = mio::net::TcpListener::from_std(listener);
+        let io = PollEvented::new(io)?;
+        Ok(TcpListener { io })
+    }
+
     /// Turns a [`tokio::net::TcpListener`] into a [`std::net::TcpListener`].
     ///
     /// The returned [`std::net::TcpListener`] will have nonblocking mode set as
