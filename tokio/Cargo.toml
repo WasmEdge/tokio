@@ -152,7 +152,7 @@ socket2 = "0.4"
 [target.'cfg(target_arch = "wasm32")'.dev-dependencies]
 wasm-bindgen-test = "0.3.0"
 [target.'cfg(target_arch = "wasm32")'.dependencies]
-wasmedge_wasi_socket = {git="https://github.com/MediosZ/wasmedge_wasi_socket.git", branch = "tcplistener"}
+wasmedge_wasi_socket = {git="https://github.com/second-state/wasmedge_wasi_socket.git"}
 
 [target.'cfg(target_os = "freebsd")'.dev-dependencies]
 mio-aio = { version = "0.6.0", features = ["tokio"] }
